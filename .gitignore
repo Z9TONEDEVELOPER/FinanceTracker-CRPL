@@ -1,0 +1,121 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+# =========================================
+# 1. Пользовательские файлы и настройки IDE
+# =========================================
+# Rider (JetBrains)
+.idea/
+*.sln.docstates
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# =========================================
+# 2. Результаты сборки .NET (C#, ASP.NET, Blazor, Avalonia)
+# =========================================
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.exe
+*.pdb
+*.userprefs
+
+# =========================================
+# 3. ASP.NET / Blazor / Frontend
+# =========================================
+# Папки с клиентскими зависимостями (если используешь npm в Blazor/ASP)
+node_modules/
+jspm_packages/
+bower_components/
+
+# Файлы, генерируемые при публикации
+*.pubxml
+PublishScripts/
+
+# Секреты и локальные настройки (раскомментируй, если там есть реальные пароли/ключи)
+# appsettings.Development.json
+# appsettings.*.json
+# !appsettings.json # Оставляем основной шаблон
+
+# =========================================
+# 4. Базы данных
+# =========================================
+# SQL Server
+*.mdf
+*.ldf
+*.ndf
+
+# SQLite
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+# Backup
+*.bak
+*.backup
+
+# =========================================
+# 5. Пакетные менеджеры и кэш
+# =========================================
+# NuGet (если используешь локальную папку packages, а не глобальный кэш)
+packages/
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# Кэш инструментов
+.cr/personal
+**/__pycache__/
+*.pyc
+
+# =========================================
+# 6. Файлы операционных систем
+# =========================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+.directory
+
+# =========================================
+# 7. Прочее (Логи, временные файлы)
+# =========================================
+*.log
+*.tmp
+*.temp
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
