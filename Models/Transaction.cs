@@ -1,8 +1,25 @@
 using FinanceTracker.CLI.Enums;
+using System.Text.Json.Serialization;
 namespace FinanceTracker.CLI.Models;
 
 public class Transaction
 {
+    [JsonConstructor]
+    public Transaction(
+        int id, 
+        decimal amount, 
+        TransactionType type, 
+        CategoryType category, 
+        string? description, 
+        DateTime date)
+    {
+        Id = id;
+        Amount = amount;
+        Type = type;
+        Category = category;
+        Description = description;
+        Date = date;
+    }
     public Transaction(
         decimal amount,
         TransactionType type,
@@ -53,5 +70,9 @@ public class Transaction
         init;
     }
     
+    public static void SetNextId(int value)
+    {
+        _nextId = value;
+    }
     
 }

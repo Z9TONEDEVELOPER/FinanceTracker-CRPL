@@ -2,18 +2,28 @@
 using FinanceTracker.CLI.Services;
 using FinanceTracker.CLI.Enums;
 using FinanceTracker.CLI.Exceptions;
+using FinanceTracker.CLI.Storage;
 using FinanceTracker.CLI.UI;
 
 namespace FinanceTracker.CLI;
 
 class Program
 {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
         FinanceManager manager = new FinanceManager();
+        manager.OnBudgetExceeded += (sender, e) =>
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"WARNING: Budget exceeded for {e.Category}!");
+            Console.WriteLine($"Limit: {e.Limit}, Spent: {e.Spent}, Over by: {e.OverAmount}");
+            Console.ResetColor();
+        }; 
         FinanceUI ui = new FinanceUI();
         AnalyticsService analyticsService = new AnalyticsService();
         bool isRunning = true;
+        await manager.LoadFromStorageBudgets();
+        await manager.LoadFromStorageTransactions();
         while (isRunning)
         {
             ui.ShowMainMenu();
@@ -29,8 +39,10 @@ class Program
                     try
                     {
                         Transaction newTransaction = new Transaction(amount, transaction, category, description, time);
-                        manager.AddTransaction(newTransaction);
+                        manager.AddTransactions(newTransaction);
                         ui.ShowMessage("Transaction added");
+                        await JsonStorage.SaveBudgets(manager.GetAllBudgets());
+                        await JsonStorage.SaveTransactions(manager.GetAllTransaction());
                     }
                     catch (TransactionValidationException ex)
                     {
@@ -44,6 +56,8 @@ class Program
                     if (removed)
                     {
                         ui.ShowMessage($"The transaction {ui.DeletedTransactionPrint(removedTran)} was successfully deleted");
+                        await JsonStorage.SaveBudgets(manager.GetAllBudgets());
+                        await JsonStorage.SaveTransactions(manager.GetAllTransaction());
                     }
                     else
                     {
@@ -83,7 +97,18 @@ class Program
                 case 9:
                     ui.ShowMessage($"The most popular category: {analyticsService.GetMostFrequentCategory(manager.GetAllTransaction())}");
                     break;
+                case 10:
+                    var (categoryBudget, limit) = ui.SetUserBudget();
+                    manager.SetBudget(categoryBudget,limit);
+                    ui.ShowMessage("The budget has been set");
+                    break;
+                case 11:
+                    var (limitB, spent, rem) = manager.CheckBudget(ui.CheckUserBudget());
+                    ui.ShowMessage($"Limit: {limitB}| Spent: {spent}| Remaining: {rem}");
+                    break;
                 case 0:
+                    await JsonStorage.SaveBudgets(manager.GetAllBudgets());
+                    await JsonStorage.SaveTransactions(manager.GetAllTransaction());
                     isRunning = false;
                     break;
             }

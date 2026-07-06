@@ -31,7 +31,7 @@ public class AnalyticsService
     public decimal GetAverageTransactionAmount(IReadOnlyList<Transaction> transactions)
     {
         var exp = transactions.Where(t => t.Type == TransactionType.Expense);
-        if (exp.Any())
+        if (!exp.Any())
         {
             return 0;
         }

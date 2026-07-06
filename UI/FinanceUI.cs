@@ -22,6 +22,9 @@ public class FinanceUI
         Console.WriteLine("7. Show transactions for the period");
         Console.WriteLine("8. Show average check");
         Console.WriteLine("9. Show the most common category");
+        Console.WriteLine("==========Budget==========");
+        Console.WriteLine("10. Set Budget");
+        Console.WriteLine("11. Check Budget");
     }
 
     public void ShowAllTransaction(IReadOnlyList<Transaction> transactions)
@@ -240,5 +243,17 @@ public class FinanceUI
             }
         }
     }
-    
+
+    public (CategoryType, decimal) SetUserBudget()
+    {
+        CategoryType category = ReadCategory();
+        decimal limit = ReadAmount();
+        return (category, limit);
+    }
+
+    public CategoryType CheckUserBudget()
+    {
+        CategoryType category = ReadCategory();
+        return category;
+    }
 }
