@@ -1,9 +1,10 @@
+using FinanceTracker.CLI.Contracts;
 using FinanceTracker.CLI.Enums;
 using FinanceTracker.CLI.Models;
 
 namespace FinanceTracker.CLI.Services;
 
-public class AnalyticsService
+public class AnalyticsService : IAnalyticsService
 {
     public decimal CalculateBalance(IReadOnlyList<Transaction> transactions)
     {
@@ -12,7 +13,7 @@ public class AnalyticsService
         return incomeAmount - expenseAmount;
     }
 
-    public Dictionary<CategoryType, decimal> GetTotalByCategory(IReadOnlyList<Transaction> transactions) //TODO: разделить на категории и поправить ui
+    public Dictionary<CategoryType, decimal> GetTotalByCategory(IReadOnlyList<Transaction> transactions) 
     {
         return transactions.GroupBy(t => t.Category).ToDictionary(g => g.Key, g => g.Sum(t => t.Amount));
     }

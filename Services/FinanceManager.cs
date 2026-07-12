@@ -1,3 +1,4 @@
+using FinanceTracker.CLI.Contracts;
 using FinanceTracker.CLI.Enums;
 using FinanceTracker.CLI.Exceptions;
 using FinanceTracker.CLI.Models;
@@ -5,13 +6,15 @@ using FinanceTracker.CLI.Storage;
 
 namespace FinanceTracker.CLI.Services;
 
-public class FinanceManager
+public class FinanceManager : IFinanceManager
 {
-    public FinanceManager()
+    public FinanceManager(IStorage storage)
     {
+        _storage = storage;
         _transactions = new List<Transaction>();
         _budgets = new Dictionary<CategoryType, Budget>();
     }
+    private readonly IStorage _storage;
     private readonly List<Transaction> _transactions;
     private Dictionary<CategoryType, Budget> _budgets;
     public void AddTransactions(Transaction transactionNew)
@@ -109,12 +112,11 @@ public class FinanceManager
     {
         try
         {
-            var loadedTransactions = await JsonStorage.LoadTransactions();
+            var loadedTransactions = await _storage.LoadTransactions();
             foreach (var transaction in loadedTransactions)
             {
                 _transactions.Add(transaction);
             }
-        
             if (_transactions.Any())
             {
                 int maxId = _transactions.Max(t => t.Id);
@@ -131,7 +133,7 @@ public class FinanceManager
     {
         try
         {
-            var loadedBudgets = await JsonStorage.LoadBudgets();
+            var loadedBudgets = await _storage.LoadBudgets();
             foreach (var kvp in loadedBudgets)
             {
                 _budgets[kvp.Key] = kvp.Value;

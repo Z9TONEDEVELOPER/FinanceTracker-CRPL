@@ -20,8 +20,7 @@ public class Budget
 
     public CategoryType Category { get; }
     public decimal Limit { get; }
-    [JsonInclude]
-    public decimal Spent { get; private set; }
+    public decimal Spent { get; set; }
 
     public event EventHandler<BudgetExceededEventArgs>? OnBudgetExceeded;
 
